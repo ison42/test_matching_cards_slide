@@ -481,7 +481,7 @@ button {
 }
 
 .card.is-exiting-left,
-.card.is-exiting-right {
+.card.is-entering-prev {
   z-index: 4;
 }
 
@@ -489,8 +489,8 @@ button {
   transform: translateX(-380px);
 }
 
-.card.is-exiting-right {
-  transform: translateX(380px);
+.card.is-entering-prev {
+  filter: drop-shadow(4px 0 2px rgba(222, 218, 240, 0.4));
 }
 
 .art {

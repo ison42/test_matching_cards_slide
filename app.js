@@ -48,6 +48,14 @@ function relationForActive(index, baseIndex) {
   return (index - baseIndex + cards.length) % cards.length;
 }
 
+function normalizeIndex(index) {
+  return (index + cards.length) % cards.length;
+}
+
+function cardFor(index) {
+  return stage.querySelector(`.card[data-card-index="${normalizeIndex(index)}"]`);
+}
+
 function buildCards() {
   stage.innerHTML = "";
 
@@ -123,10 +131,16 @@ function advance(direction) {
   if (locked) return;
   locked = true;
   const nextIndex = (activeIndex + direction + cards.length) % cards.length;
-  const exitingCard = stage.querySelector(`.card[data-card-index="${activeIndex}"]`);
+
+  if (direction < 0) {
+    advanceToPrevious(nextIndex);
+    return;
+  }
+
+  const exitingCard = cardFor(activeIndex);
 
   updateSlots(true, nextIndex, exitingCard);
-  exitingCard.className = `card slot-front ${direction > 0 ? "is-exiting-left" : "is-exiting-right"}`;
+  exitingCard.className = "card slot-front is-exiting-left";
   exitingCard.setAttribute("aria-hidden", "true");
   exitingCard.tabIndex = -1;
 
@@ -135,6 +149,36 @@ function advance(direction) {
     updateSlots(false);
     locked = false;
   }, 370);
+}
+
+function advanceToPrevious(nextIndex) {
+  const previousCard = cardFor(nextIndex);
+
+  previousCard.className = "card slot-front is-entering-prev";
+  previousCard.setAttribute("aria-hidden", "false");
+  previousCard.tabIndex = 0;
+
+  if (!previousCard.style.transform) {
+    stage.classList.add("no-transition");
+    previousCard.style.transform = "translateX(-380px)";
+    previousCard.getBoundingClientRect();
+    stage.classList.remove("no-transition");
+  }
+
+  requestAnimationFrame(() => {
+    previousCard.style.transform = "translateX(0)";
+  });
+
+  window.setTimeout(() => {
+    updateSlots(true, nextIndex, previousCard);
+  }, 120);
+
+  window.setTimeout(() => {
+    activeIndex = nextIndex;
+    previousCard.style.transform = "";
+    updateSlots(false);
+    locked = false;
+  }, 430);
 }
 
 function onPointerDown(event) {
@@ -149,9 +193,21 @@ function onPointerDown(event) {
 function onPointerMove(event) {
   if (!dragging) return;
   dragX = event.clientX - startX;
-  const front = stage.querySelector(".slot-front");
-  const mid = stage.querySelector(".slot-mid");
-  const distance = Math.max(-56, Math.min(56, dragX));
+  const front = cardFor(activeIndex);
+  const mid = cardFor(activeIndex + 1);
+  const distance = Math.max(-80, Math.min(120, dragX));
+
+  if (distance > 0) {
+    const previousCard = cardFor(activeIndex - 1);
+    const enterX = Math.min(0, -380 + distance * 3.1);
+    previousCard.className = "card slot-front is-entering-prev";
+    previousCard.style.transform = `translateX(${enterX}px)`;
+    front.style.transform = "";
+    mid.style.transform = "";
+    return;
+  }
+
+  resetPreviousPreviewIfNeeded();
   front.style.transform = `translateX(${distance}px)`;
   mid.style.transform = `translateX(${distance * 0.24}px)`;
 }
@@ -161,14 +217,52 @@ function onPointerUp(event) {
   dragging = false;
   stage.classList.remove("is-dragging");
   stage.releasePointerCapture(event.pointerId);
+
+  if (Math.abs(dragX) > 48) {
+    const direction = dragX < 0 ? 1 : -1;
+    if (direction > 0) {
+      clearDragTransforms();
+    } else {
+      const front = cardFor(activeIndex);
+      const mid = cardFor(activeIndex + 1);
+      front.style.transform = "";
+      mid.style.transform = "";
+    }
+    advance(direction);
+    return;
+  }
+
+  if (dragX > 0) {
+    cancelPreviousDrag();
+    return;
+  }
+
+  clearDragTransforms();
+}
+
+function clearDragTransforms() {
   stage.querySelectorAll(".card").forEach((card) => {
     card.style.transform = "";
   });
-
-  if (Math.abs(dragX) > 48) {
-    advance(dragX < 0 ? 1 : -1);
-  }
 }
+
+function cancelPreviousDrag() {
+  const previousCard = cardFor(activeIndex - 1);
+  previousCard.style.transform = "translateX(-380px)";
+
+  window.setTimeout(() => {
+    previousCard.style.transform = "";
+    updateSlots(false);
+  }, 220);
+}
+
+function resetPreviousPreviewIfNeeded() {
+  const previousCard = cardFor(activeIndex - 1);
+  if (!previousCard.classList.contains("is-entering-prev")) return;
+  previousCard.style.transform = "";
+  updateSlots(false);
+}
+
 
 stage.addEventListener("click", (event) => {
   const hit = event.target.closest(".next-hit, .slot-mid, .slot-back");
