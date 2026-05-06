@@ -142,6 +142,8 @@ function advance(direction) {
 
 function advanceToNext(nextIndex) {
   const exitingCard = cardFor(activeIndex);
+  const promoteDelay = 260;
+  const settleDelay = 660;
 
   exitingCard.className = "card slot-front is-exiting-left";
   exitingCard.setAttribute("aria-hidden", "true");
@@ -153,14 +155,23 @@ function advanceToNext(nextIndex) {
 
   window.setTimeout(() => {
     updateSlots(true, nextIndex, exitingCard);
-  }, 380);
+  }, promoteDelay);
 
   window.setTimeout(() => {
+    exitingCard.style.transition = "none";
+    exitingCard.style.opacity = "0";
     activeIndex = nextIndex;
     exitingCard.style.transform = "";
     updateSlots(false);
-    locked = false;
-  }, 800);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        exitingCard.style.transition = "";
+        exitingCard.style.opacity = "";
+        locked = false;
+      });
+    });
+  }, settleDelay);
 }
 
 function advanceToPrevious(nextIndex) {
