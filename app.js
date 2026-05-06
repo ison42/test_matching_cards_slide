@@ -153,14 +153,14 @@ function advanceToNext(nextIndex) {
 
   window.setTimeout(() => {
     updateSlots(true, nextIndex, exitingCard);
-  }, 210);
+  }, 380);
 
   window.setTimeout(() => {
     activeIndex = nextIndex;
     exitingCard.style.transform = "";
     updateSlots(false);
     locked = false;
-  }, 590);
+  }, 800);
 }
 
 function advanceToPrevious(nextIndex) {
