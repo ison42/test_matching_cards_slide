@@ -485,10 +485,6 @@ button {
   z-index: 4;
 }
 
-.card.is-exiting-left {
-  transform: translateX(-380px);
-}
-
 .card.is-entering-prev {
   filter: drop-shadow(4px 0 2px rgba(222, 218, 240, 0.4));
 }

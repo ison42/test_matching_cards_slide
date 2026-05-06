@@ -137,18 +137,30 @@ function advance(direction) {
     return;
   }
 
+  advanceToNext(nextIndex);
+}
+
+function advanceToNext(nextIndex) {
   const exitingCard = cardFor(activeIndex);
 
-  updateSlots(true, nextIndex, exitingCard);
   exitingCard.className = "card slot-front is-exiting-left";
   exitingCard.setAttribute("aria-hidden", "true");
   exitingCard.tabIndex = -1;
 
+  requestAnimationFrame(() => {
+    exitingCard.style.transform = "translateX(-380px)";
+  });
+
+  window.setTimeout(() => {
+    updateSlots(true, nextIndex, exitingCard);
+  }, 210);
+
   window.setTimeout(() => {
     activeIndex = nextIndex;
+    exitingCard.style.transform = "";
     updateSlots(false);
     locked = false;
-  }, 370);
+  }, 590);
 }
 
 function advanceToPrevious(nextIndex) {
@@ -209,7 +221,7 @@ function onPointerMove(event) {
 
   resetPreviousPreviewIfNeeded();
   front.style.transform = `translateX(${distance}px)`;
-  mid.style.transform = `translateX(${distance * 0.24}px)`;
+  mid.style.transform = "";
 }
 
 function onPointerUp(event) {
@@ -221,7 +233,8 @@ function onPointerUp(event) {
   if (Math.abs(dragX) > 48) {
     const direction = dragX < 0 ? 1 : -1;
     if (direction > 0) {
-      clearDragTransforms();
+      const mid = cardFor(activeIndex + 1);
+      mid.style.transform = "";
     } else {
       const front = cardFor(activeIndex);
       const mid = cardFor(activeIndex + 1);
@@ -262,7 +275,6 @@ function resetPreviousPreviewIfNeeded() {
   previousCard.style.transform = "";
   updateSlots(false);
 }
-
 
 stage.addEventListener("click", (event) => {
   const hit = event.target.closest(".next-hit, .slot-mid, .slot-back");
