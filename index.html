@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>搭配卡片滑动 Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="phone" aria-label="AI 搭配方案">
+      <section class="screen">
+        <header class="top">
+          <div class="header-bg" aria-hidden="true">
+            <img class="header-blur-one" src="./assets/header-blur-1.png" alt="" />
+            <img class="header-blur-two" src="./assets/header-blur-2.png" alt="" />
+            <img class="header-ellipse" src="./assets/header-ellipse.svg" alt="" />
+            <span class="header-fade"></span>
+          </div>
+          <div class="status">
+            <span>9:41</span>
+            <img class="system-icons" src="./assets/status-right.svg" alt="" />
+          </div>
+          <div class="nav">
+            <button class="icon-btn back" type="button" aria-label="返回">
+              <img src="./assets/icon-back.svg" alt="" />
+            </button>
+            <div class="avatar" aria-hidden="true">
+              <img class="avatar-ellipse-five" src="./assets/avatar-ellipse-5.svg" alt="" />
+              <img class="avatar-ellipse-two" src="./assets/avatar-ellipse-2.svg" alt="" />
+              <img class="avatar-ellipse-three" src="./assets/avatar-ellipse-3.svg" alt="" />
+              <img class="avatar-ellipse-four" src="./assets/avatar-ellipse-4.svg" alt="" />
+              <img class="avatar-eye" src="./assets/avatar-eye.svg" alt="" />
+              <img class="avatar-face avatar-face-main" src="./assets/avatar-face.png" alt="" />
+              <img class="avatar-face avatar-face-glow" src="./assets/avatar-face.png" alt="" />
+            </div>
+            <div class="agent">
+              <div class="agent-name" aria-label="AI小唯">
+                <img class="ai-name" src="./assets/ai-name.svg" alt="" />
+                <span class="ai-spark" aria-hidden="true">
+                  <img class="ai-star-large" src="./assets/ai-star-large.svg" alt="" />
+                  <img class="ai-star-slim" src="./assets/ai-star-slim.svg" alt="" />
+                  <img class="ai-star-dot" src="./assets/ai-star-dot.svg" alt="" />
+                </span>
+              </div>
+              <span>内容由AI生成，仅供参考</span>
+            </div>
+            <div class="nav-actions" aria-hidden="true">
+              <span class="top-action">
+                <span class="top-icon cart-icon">
+                  <img class="cart-body" src="./assets/icon-cart-body.svg" alt="" />
+                  <img class="cart-base" src="./assets/icon-cart-base.svg" alt="" />
+                </span>
+                <span>购物车</span>
+              </span>
+              <span class="top-action">
+                <span class="top-icon new-chat-icon">
+                  <img class="new-chat-box" src="./assets/icon-new-chat-box.svg" alt="" />
+                  <img class="new-chat-plus" src="./assets/icon-new-chat-plus.svg" alt="" />
+                </span>
+                <span>新会话</span>
+              </span>
+              <span class="top-action">
+                <span class="top-icon more-icon">
+                  <img src="./assets/icon-more.svg" alt="" />
+                </span>
+                <span>更多</span>
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <div class="conversation">
+          <div class="profile-pill">女，26-30岁，165cm 49kg</div>
+          <p class="intro">由 搭配师Trista为您定制的搭配方案已经完成了，快来看看吧～</p>
+
+          <section class="match-stage" aria-label="搭配卡片，可左右滑动切换">
+            <div class="cards" id="cards"></div>
+          </section>
+        </div>
+
+        <footer class="bottom">
+          <div class="quick-actions">
+            <button type="button">
+              <span class="quick-icon"><img src="./assets/icon-discount.svg" alt="" /></span>
+              <span>问优惠</span>
+            </button>
+            <button type="button">
+              <span class="quick-icon"><img src="./assets/icon-search-clean.svg" alt="" /></span>
+              <span>帮我找</span>
+            </button>
+            <button type="button">
+              <span class="quick-icon activity-icon"><img src="./assets/icon-activity.svg" alt="" /></span>
+              <span>活动小灵通</span>
+            </button>
+            <button type="button">
+              <span class="quick-icon"><img src="./assets/icon-order-clean.svg" alt="" /></span>
+              <span>问订单</span>
+            </button>
+            <button type="button">
+              <span class="quick-icon"><img src="./assets/icon-commodity-clean.svg" alt="" /></span>
+              <span>问商品</span>
+            </button>
+          </div>
+          <div class="input-bar">
+            <img class="mic" src="./assets/icon-mic.svg" alt="" />
+            <span>请输入你的问题</span>
+            <button class="plus" type="button" aria-label="添加">
+              <img src="./assets/icon-plus.svg" alt="" />
+            </button>
+          </div>
+          <div class="home-indicator"></div>
+        </footer>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
