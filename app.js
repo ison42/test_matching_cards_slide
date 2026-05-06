@@ -142,8 +142,8 @@ function advance(direction) {
 
 function advanceToNext(nextIndex) {
   const exitingCard = cardFor(activeIndex);
-  const promoteDelay = 260;
-  const settleDelay = 660;
+  const promoteDelay = 200;
+  const settleDelay = 590;
 
   exitingCard.className = "card slot-front is-exiting-left";
   exitingCard.setAttribute("aria-hidden", "true");
